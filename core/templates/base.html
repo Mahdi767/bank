@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Mamar Bank</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+
+<body class="bg-background-light">
+
+    <header class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="flex h-20 items-center justify-between">
+                
+                <!-- Brand Section -->
+                <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+                    <div class="flex items-center justify-center size-10 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 transition-transform group-hover:scale-105">
+                        <span class="material-symbols-outlined text-2xl">account_balance</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <h1 class="text-xl font-extrabold text-gray-900 leading-none tracking-tight">Mamar Bank</h1>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-primary">Secure Banking</span>
+                    </div>
+                </a>
+
+                <!-- Navigation Links (Authenticated Only) -->
+                <nav class="hidden sm:flex items-center gap-1">
+                    <a href="{% url 'home' %}" class="px-4 py-2 text-sm font-bold text-gray-600 hover:text-primary transition-colors rounded-lg hover:bg-primary/5">
+                        Home
+                    </a>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'transaction_report' %}"  class="px-4 py-2 text-sm font-bold text-gray-600 hover:text-primary transition-colors rounded-lg hover:bg-primary/5">
+                            Report
+                        </a>
+                        <a  href="{% url 'deposit_money' %}"  class="px-4 py-2 text-sm font-bold text-gray-600 hover:text-primary transition-colors rounded-lg hover:bg-primary/5">
+                            Deposit
+                        </a>
+                        <a href="{% url 'withdraw_money' %}"  class="px-4 py-2 text-sm font-bold text-gray-600 hover:text-primary transition-colors rounded-lg hover:bg-primary/5">
+                            Withdraw
+                        </a>
+                        <a href="{% url 'loan_request' %}" class="px-4 py-2 text-sm font-bold text-gray-600 hover:text-primary transition-colors rounded-lg hover:bg-primary/5">
+                            Loan Request
+                        </a>
+                    {% endif %}
+                </nav>
+
+                <!-- Action Area -->
+                <div class="flex items-center gap-4">
+                    {% if request.user.is_authenticated %}
+                        <!-- User Profile Info -->
+                        <a href="{% url 'profile' %}" class="flex items-center gap-3 p-1.5 rounded-full hover:bg-gray-50 transition-colors group border border-transparent hover:border-gray-100">
+                            <div class="relative">
+                                <div class="size-10 rounded-full border-2 border-white overflow-hidden bg-primary/10 flex items-center justify-center text-primary ring-2 ring-primary/10">
+                                    <span class="material-symbols-outlined font-bold">person</span>
+                                </div>
+                                <div class="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white rounded-full"></div>
+                            </div>
+                            <div class="hidden lg:flex flex-col items-start text-left">
+                                <span class="text-sm font-bold text-gray-900 leading-tight">{{ request.user.first_name }}</span>
+                                <span class="text-[11px] font-bold text-primary">Balance: ${{ request.user.accounts.balance }}</span>
+                            </div>
+                        </a>
+
+                        <!-- Vertical Divider -->
+                        <div class="h-8 w-px bg-gray-200 mx-2"></div>
+
+                        <!-- Logout Button -->
+                        <a href="{% url 'logout' %}"  class="flex items-center justify-center gap-2 px-5 h-10 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold text-sm transition-all shadow-md shadow-primary/20 active:scale-95">
+                            <span>Logout</span>
+                            <span class="material-symbols-outlined text-lg">logout</span>
+                        </a>
+
+                    {% else %}
+                        <!-- Guest State Buttons -->
+                        <a href="{% url 'login' %}" class="px-5 py-2 text-sm font-bold text-gray-700 hover:text-primary transition-colors">
+                            Login
+                        </a>
+                        <a href="{% url 'register' %}" class="flex items-center justify-center px-6 h-10 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold text-sm transition-all shadow-md shadow-primary/20 active:scale-95">
+                            Register
+                        </a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+
+{% block content %}
+
+
+{% endblock content %}
+
+
+
+
+
+
+</body>
+</html>

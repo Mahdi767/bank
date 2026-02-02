@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <style type="text/tailwindcss">
+    :root {
+      --primary: #135bec;
+      --primary-focus: rgba(19, 91, 236, 0.15);
+    }
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #f8fafc;
+    }
+    /* 
+       This section styles the fields Django generates 
+       to make them rounded and nice 
+    */
+    input[type="text"], 
+    input[type="email"], 
+    input[type="password"], 
+    input[type="date"], 
+    select {
+      @apply w-full h-11 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 transition-all duration-200 shadow-sm;
+    }
+
+    input:focus, select:focus {
+      @apply outline-none border-primary ring-4 ring-[--primary-focus] !important;
+    }
+
+    /* Custom select arrow styling */
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+    }
+
+    .error-space { min-height: 1.25rem; }
+  </style>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: "#135bec" },
+          borderRadius: { 'xl': '0.75rem', '2xl': '1.25rem' }
+        },
+      },
+    };
+  </script>
+</head>
+
+
+<div class="max-w-2xl mx-auto py-8">
+  <h2 class="text-2xl font-semibold mb-4">Update profile</h2>
+
+    <div class="p-8 md:p-10">
+      <form method="post" class="space-y-1">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+        <!-- Username -->
+        <div class="flex flex-col">
+          <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.username.label }}</label>
+          {{ form.username }}
+          <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+            {% for e in form.username.errors %}{{ e }}{% endfor %}
+          </div>
+        </div>
+
+        <!-- Name Group -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+          <div class="flex flex-col">
+            <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.first_name.label }}</label>
+            {{ form.first_name }}
+            <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+              {% for e in form.first_name.errors %}{{ e }}{% endfor %}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.last_name.label }}</label>
+            {{ form.last_name }}
+            <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+              {% for e in form.last_name.errors %}{{ e }}{% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="flex flex-col">
+          <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.email.label }}</label>
+          {{ form.email }}
+          <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+            {% for e in form.email.errors %}{{ e }}{% endfor %}
+          </div>
+        </div>
+
+        <!-- Type & Gender -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+          <div class="flex flex-col">
+            <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.account_type.label }}</label>
+            {{ form.account_type }}
+            <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+              {% for e in form.account_type.errors %}{{ e }}{% endfor %}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.gender.label }}</label>
+            {{ form.gender }}
+            <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+              {% for e in form.gender.errors %}{{ e }}{% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Birth Date -->
+        <div class="flex flex-col">
+          <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.birth_date.label }}</label>
+          {{ form.birth_date }}
+          <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+            {% for e in form.birth_date.errors %}{{ e }}{% endfor %}
+          </div>
+        </div>
+
+        <!-- Passwords -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+          <div class="flex flex-col">
+            <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.password1.label }}</label>
+            {{ form.password1 }}
+            <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+              {% for e in form.password1.errors %}{{ e }}{% endfor %}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.password2.label }}</label>
+            {{ form.password2 }}
+            <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+              {% for e in form.password2.errors %}{{ e }}{% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Address Info -->
+        <div class="flex flex-col">
+          <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.street_address.label }}</label>
+          {{ form.street_address }}
+          <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+              {% for e in form.street_address.errors %}{{ e }}{% endfor %}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+          <div class="flex flex-col">
+            <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.city.label }}</label>
+            {{ form.city }}
+            <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+              {% for e in form.city.errors %}{{ e }}{% endfor %}
+            </div>
+          </div>
+          
+          <div class="flex flex-col">
+            <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.postal_code.label }}</label>
+            {{ form.postal_code }}
+            <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+              {% for e in form.postal_code.errors %}{{ e }}{% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-slate-700 text-sm font-bold mb-1.5 ml-1">{{ form.country.label }}</label>
+          {{ form.country }}
+          <div class="error-space text-[11px] text-red-500 mt-1 px-1 font-medium">
+            {% for e in form.country.errors %}{{ e }}{% endfor %}
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="pt-4">
+          <button type="submit" class="w-full h-12 bg-primary hover:bg-blue-700 text-white rounded-xl font-bold text-base shadow-lg shadow-primary/25 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2">
+            Save Changes
+          </button>
+        </div>
+      </form>
+
+</div>
+{% endblock content %}

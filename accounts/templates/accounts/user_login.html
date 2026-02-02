@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Mamar Bank - Login</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Material+Icons&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#15803d", 
+              "background-light": "#f8fafc",
+              "background-dark": "#0f172a",
+            },
+            fontFamily: { display: ["Inter", "sans-serif"] },
+            borderRadius: { DEFAULT: "0.75rem" },
+          },
+        },
+      };
+    </script>
+    <style>
+      .curved-bg { clip-path: ellipse(100% 120% at 0% 50%); }
+      @media (max-width: 768px) {
+        .curved-bg { clip-path: ellipse(120% 100% at 50% 0%); height: 300px; }
+      }
+    </style>
+  </head>
+  <body class="font-display bg-background-light dark:bg-background-dark min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+    
+    <button class="fixed top-6 right-6 p-2 rounded-full bg-white dark:bg-slate-800 shadow-md border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:scale-110 transition-transform" onclick="document.documentElement.classList.toggle('dark')">
+      <span class="material-icons">dark_mode</span>
+    </button>
+
+    <div class="max-w-5xl w-full bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px] border border-slate-100 dark:border-slate-800">
+      
+      <!-- Left Panel (Sidebar) -->
+      <div class="md:w-5/12 bg-primary relative overflow-hidden flex flex-col items-center justify-center p-12 text-center text-white curved-bg">
+        <div class="relative z-10 flex flex-col items-center">
+          <div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mb-6 shadow-xl">
+            <span class="material-icons text-white text-5xl">account_balance</span>
+          </div>
+          <h2 class="text-3xl font-bold mb-2 tracking-tight">Mamar Bank</h2>
+          <p class="text-green-50 text-opacity-80 mb-10 max-w-[250px]">To stay connected with us please login with your personal info</p>
+          <h3 class="text-2xl font-semibold mb-6">Welcome Back!</h3>
+          <a href="{% url 'register' %}" class="px-10 py-3 border-2 border-white/50 hover:border-white rounded-full font-medium transition-all hover:bg-white hover:text-primary active:scale-95 uppercase tracking-wider text-sm">
+            Sign Up
+          </a>
+        </div>
+        <div class="absolute bottom-8 left-0 right-0 text-[10px] uppercase tracking-widest opacity-60">Secure Banking | Trusted Globally</div>
+      </div>
+
+      <!-- Right Panel (Form) -->
+      <div class="md:w-7/12 p-8 md:p-16 flex flex-col justify-center bg-white dark:bg-slate-900">
+        <div class="max-w-md mx-auto w-full">
+          
+          <div class="mb-10 text-center md:text-left">
+            <h1 class="text-4xl font-bold text-primary dark:text-green-500 mb-2">Welcome</h1>
+            <p class="text-slate-500 dark:text-slate-400">Login in to your account to continue</p>
+          </div>
+
+          <!-- HIGHLIGHT: GLOBAL ERRORS (e.g., Wrong Password) -->
+          {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+              <div class="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded mb-6 shadow-sm" role="alert">
+                <p class="font-bold text-xs uppercase tracking-wide">Error</p>
+                <p class="text-sm">{{ error }}</p>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <!-- HIGHLIGHT: FORM TAG SETUP 
+               1. method="post" is required to send data.
+               2. remove onsubmit="event.preventDefault();" so the form actually submits.
+          -->
+          <form method="post" class="space-y-5">
+            {% csrf_token %} <!-- Required for security -->
+
+            <!-- HIGHLIGHT: HIDDEN FIELDS -->
+            {% for hidden_field in form.hidden_fields %} 
+              {{ hidden_field }} 
+            {% endfor %} 
+
+            <!-- HIGHLIGHT: USERNAME / EMAIL FIELD -->
+            <div>
+              <div class="relative group">
+                <span class="material-icons absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">alternate_email</span>
+                
+                <!-- NOTE: Django usually looks for the name "username". 
+                     We use the Django variable but manually define classes 
+                     OR use the standard input with name="username" -->
+                <input
+                  name="username"
+                  id="id_username"
+                  class="w-full pl-12 pr-4 py-4 bg-slate-100 dark:bg-slate-800 border-transparent focus:border-primary focus:ring-0 rounded-2xl dark:text-white transition-all placeholder:text-slate-400"
+                  placeholder="Username or Email"
+                  type="text"
+                  required
+                />
+              </div>
+              <!-- Field Specific Error -->
+              {% if form.username.errors %}
+                <p class="text-red-500 text-xs mt-1 ml-2">{% for error in form.username.errors %}{{ error }}{% endfor %}</p>
+              {% endif %}
+            </div>
+
+            <!-- HIGHLIGHT: PASSWORD FIELD -->
+            <div>
+              <div class="relative group">
+                <span class="material-icons absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">lock_outline</span>
+                <input
+                  name="password"
+                  id="id_password"
+                  class="w-full pl-12 pr-4 py-4 bg-slate-100 dark:bg-slate-800 border-transparent focus:border-primary focus:ring-0 rounded-2xl dark:text-white transition-all placeholder:text-slate-400"
+                  placeholder="Password"
+                  type="password"
+                  required
+                />
+              </div>
+              <!-- Field Specific Error -->
+              {% if form.password.errors %}
+                <p class="text-red-500 text-xs mt-1 ml-2">{% for error in form.password.errors %}{{ error }}{% endfor %}</p>
+              {% endif %}
+              
+              <div class="text-right mt-2">
+                <a class="text-sm text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-green-500 transition-colors" href="#">Forgot your password?</a>
+              </div>
+            </div>
+
+            <!-- HIGHLIGHT: SUBMIT BUTTON 
+                 Ensure type="submit" is present.
+            -->
+            <div class="pt-4">
+              <button
+                type="submit"
+                class="w-full md:w-auto px-12 py-4 bg-primary hover:bg-green-700 text-white font-bold rounded-2xl shadow-lg shadow-green-200 dark:shadow-none transition-all hover:scale-[1.02] active:scale-95 uppercase tracking-wide"
+              >
+                Log In
+              </button>
+            </div>
+          </form>
+
+          <div class="mt-12 text-center text-slate-500 dark:text-slate-400 text-sm">
+            Don't have an account?
+            <a class="text-primary dark:text-green-500 font-bold hover:underline" href="{% url 'register' %}">Sign up</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

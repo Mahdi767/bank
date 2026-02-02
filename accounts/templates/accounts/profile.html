@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="flex-1 overflow-y-auto pb-12">
+    <div class="max-w-[1140px] mx-auto px-4 sm:px-10 mt-8">
+        
+        <!-- Profile Header Card -->
+        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden mb-8">
+            <div class="h-32 bg-primary relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
+            </div>
+            <div class="px-8 pb-8 -mt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6 relative z-10">
+                <div class="flex items-end gap-6">
+                    <!-- Profile Avatar -->
+                    <div class="bg-primary/10 flex items-center justify-center rounded-2xl size-32 border-4 border-white dark:border-slate-900 shadow-md bg-white">
+                        <span class="material-symbols-outlined text-primary text-6xl">person</span>
+                    </div>
+                    <div class="mb-2">
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">
+                                {{ request.user.get_full_name|default:request.user.username }}
+                            </h1>
+                            <span class="bg-primary/10 text-primary text-[10px] uppercase font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">verified</span>
+                                Verified User
+                            </span>
+                        </div>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                            Member Since {{ request.user.date_joined|date:"M Y" }} • Premium Account
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-col items-start md:items-end gap-1 mb-2">
+                    <span class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Total Available Balance</span>
+                    <div class="flex items-baseline gap-1 text-primary">
+                        <span class="text-3xl font-extrabold leading-none">${{ request.user.accounts.balance }}</span>
+                        <span class="text-sm font-bold">USD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-slate-200 dark:border-slate-800 mb-8 gap-8 px-2 overflow-x-auto whitespace-nowrap no-scrollbar">
+            <a class="flex items-center gap-2 border-b-2 border-primary text-slate-900 dark:text-white pb-4 px-1" href="#">
+                <span class="material-symbols-outlined text-xl">person</span>
+                <p class="text-sm font-bold">Profile Details</p>
+            </a>
+            <a class="flex items-center gap-2 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 pb-4 px-1" href="#">
+                <span class="material-symbols-outlined text-xl">security</span>
+                <p class="text-sm font-semibold">Security</p>
+            </a>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Side: Information -->
+            <div class="lg:col-span-2 space-y-8">
+                <section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-8">
+                    <div class="flex items-center justify-between pb-6 border-b border-slate-100 dark:border-slate-800 mb-6">
+                        <h2 class="text-slate-900 dark:text-white text-xl font-bold flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary text-2xl">account_circle</span>
+                            Personal Information
+                        </h2>
+                        <a href='{% url "Update" %}' class="text-primary hover:text-primary/80 flex items-center gap-1 text-sm font-bold transition-colors">
+                            <span class="material-symbols-outlined text-lg">edit</span>
+                            <span>Edit</span>
+                        </a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
+                        <div class="space-y-2">
+                            <label class="text-slate-400 text-xs font-bold uppercase tracking-widest">Username</label>
+                            <div class="text-slate-900 dark:text-white font-semibold py-1">{{ request.user.username }}</div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-slate-400 text-xs font-bold uppercase tracking-widest">Email Address</label>
+                            <div class="text-slate-900 dark:text-white font-semibold py-1">{{ request.user.email }}</div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-slate-400 text-xs font-bold uppercase tracking-widest">Account Type</label>
+                            <div class="text-slate-900 dark:text-white font-semibold py-1">{{ request.user.accounts.account_type }}</div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-slate-400 text-xs font-bold uppercase tracking-widest">Gender</label>
+                            <div class="text-slate-900 dark:text-white font-semibold py-1">{{ request.user.accounts.gender }}</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Side: Security & Sessions -->
+            <div class="space-y-8">
+                <section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+                    <h2 class="text-slate-900 dark:text-white text-lg font-bold pb-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2 mb-6">
+                        <span class="material-symbols-outlined text-primary">security</span>
+                        Security Hub
+                    </h2>
+                    <button class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm shadow-primary/20">
+                        <span class="material-symbols-outlined text-xl">lock_reset</span>
+                        Change Password
+                    </button>
+                </section>
+
+                <!-- Status Card -->
+                <div class="bg-slate-900 rounded-xl p-6 text-white shadow-xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 bg-primary size-24 rounded-full blur-3xl opacity-20"></div>
+                    <h3 class="font-bold text-lg mb-2 flex items-center gap-2 relative z-10">
+                        <span class="material-symbols-outlined text-primary">verified</span>
+                        Platinum Member
+                    </h3>
+                    <p class="text-slate-400 text-xs mb-6 relative z-10">
+                        You have full access to premium bank features and 24/7 support.
+                    </p>
+                    <button class="bg-primary text-white px-4 py-2.5 rounded-lg text-sm font-bold w-full hover:bg-white hover:text-primary transition-colors relative z-10">
+                        View Benefits
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}
