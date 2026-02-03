@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.railway.app',
+    'https://bank-production-f051.up.railway.app',
 ]
 
 USE_X_FORWARDED_HOST = True
