@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-wdlub9b!l!@4i9vzv(=lutk!)0!4d_)uia)pr+vc&v20oj_kfb
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'bank-1-4ed4.onrender.com',
+    'railway.app',
     'localhost',
     '127.0.0.1',
 ]
